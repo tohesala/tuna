@@ -4,8 +4,7 @@ signal, and its inverse. The algorithm is basically the one suggested by Cooley
 and Tukey in 1965, as discussed in Introduction to Algorithms (CLRS).
 """
 
-
-from cmath import exp, pi
+from cmath import exp, pi, log
 
 from tuna.typing import NumericSequence
 
