@@ -2,7 +2,7 @@ import unittest
 import tuna.fft as fft
 
 
-class TestFFT(unittest.TestCase):
+class TestBase(unittest.TestCase):
     def assertListsAlmostEqual(self, a, b, places=7):
         self.assertEqual(len(a), len(b))
         for i in range(len(a)):
@@ -11,6 +11,8 @@ class TestFFT(unittest.TestCase):
             except AssertionError as e:
                 raise AssertionError(f"Lists differ at index {i}: {e}")
 
+
+class TestFFT(TestBase):
     def test_fft_constant_signal(self):
         # For a constant signal t the FFT should be a spike of Size(t) at zero
         # frequency
@@ -50,3 +52,14 @@ class TestFFT(unittest.TestCase):
                     (-2.7781745930520176+13.192388155425117j),
                     (-14.449905882224062+6.6756694479033j)]
         self.assertListsAlmostEqual(fft.fft(wave), expected, places=3)
+
+
+class TestInverseFFT(TestBase):
+    def test_inverse_of_fft_constant_signal(self):
+        self.assertEqual(fft.ifft([4, 0, 0, 0]), [1, 1, 1, 1])
+
+    def test_inverse_of_fft_sine_wave(self):
+        self.assertEqual(fft.ifft([0, -2j, 0, 2j]), [0, 1, 0, -1])
+
+    def test_inverse_of_fft_cosine_wave(self):
+        self.assertEqual(fft.ifft([0, 2, 0, 2]), [1, 0, -1, 0])
