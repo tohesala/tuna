@@ -4,12 +4,24 @@ signal, and its inverse. The algorithm is basically the one suggested by Cooley
 and Tukey in 1965, as discussed in Introduction to Algorithms (CLRS).
 """
 
-from cmath import exp, pi, log
+from cmath import exp, pi
 
 from tuna.typing import NumericSequence
 
 
 def fft(x: NumericSequence) -> NumericSequence:
+    """
+    Implements the Fast Fourier Transform (FFT) algorithm. The algorithm follows
+    the variant of Cooley-Tukey that is discussed in Introduction to Algorithms by CLRS.
+
+    [Cooley-Tukey FFT algorithm (Wikipedia)](https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm)
+
+    Args:
+        x: The input signal as a sequnce of discrete samples.
+
+    Returns:
+        The complex-valued spectrum of the input signal.
+    """
     n = len(x)
     if n == 1:
         return x
