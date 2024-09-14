@@ -21,7 +21,7 @@ def fft(x: NumericSequence) -> ComplexSequence:
 
     Args:
         x: The input signal as a sequnce of discrete real valued samples. The
-        list needs to be non empty and have a length that is a power of two.
+        list needs to be non empty and have a size that is a power of two.
 
     Returns:
         The complex-valued spectrum of the input signal.
@@ -54,18 +54,24 @@ def ifft(X: ComplexSequence) -> NumericSequence:
     factors negated.
 
     Args:
-        X: The complex-valued spectrum of a signal.
+        X: The complex-valued spectrum of a signal. The list needs to be non
+        empty and have a size that is a power of two.
 
     Returns:
-        The reconstructed signal (an array of discrete samples).
+        The reconstructed signal (an array of discrete real valued samples).
     """
-    n = len(X)
-    if n == 1:
-        return X
+    N = len(X)
+    if N == 0:
+        raise ValueError("Input sequence must not be empty.")
+    if not is_power_of_two(N):
+        raise ValueError("Input length must be a power of two.")
 
-    def _ifft(X, n):
-        even = _ifft(X[::2], n // 2)
-        odd = _ifft(X[1::2], n // 2)
+    def _ifft(X):
+        n = len(X)
+        if n == 1:
+            return X
+        even = _ifft(X[::2])
+        odd = _ifft(X[1::2])
         x = [0] * n
         for k in range(n // 2):
             twiddle_factor = exp(2j * pi * k / n)
@@ -74,4 +80,4 @@ def ifft(X: ComplexSequence) -> NumericSequence:
         return x
 
     # normalize the output
-    return [x.real/n for x in _ifft(X, n)]
+    return [x.real/N for x in _ifft(X)]
