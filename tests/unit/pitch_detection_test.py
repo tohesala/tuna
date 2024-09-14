@@ -13,3 +13,8 @@ class PitchDetectionTests(TestBase):
         signal = [0, 1, 0, -1]
         sample_rate = 4
         self.assertEqual(detect_pitch(signal, sample_rate), 1)
+
+        # With a sample rate of 8, the period of the same sampled wave
+        # becomes 0.5 seconds so the frequency should be 2Hz.
+        sample_rate = 8
+        self.assertEqual(detect_pitch(signal, sample_rate), 2)

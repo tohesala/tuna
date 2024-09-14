@@ -25,4 +25,4 @@ def detect_pitch(signal: NumericSequence, sample_rate: int) -> float:
     cepstrum = ifft(log_spectrum)
     # The peak of the cepstrum (which is a time domain sequence) corresponds to
     # the period of the fundamental frequency, i.e. the pitch.
-    return argmax(cepstrum)
+    return sample_rate * argmax(cepstrum) / len(signal)
