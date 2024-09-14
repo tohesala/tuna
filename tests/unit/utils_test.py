@@ -26,3 +26,6 @@ class ArgMaxTests(TestBase):
     @given(st.lists(st.integers(), min_size=1))
     def test_argmax_should_point_to_max_element(self, t):
         self.assertEqual(t[argmax(t)], sorted(t, reverse=True)[0])
+
+    def test_argmax_returns_first_max_element(self):
+        self.assertEqual(argmax([1, 2, 3, 3, 3]), 2)
