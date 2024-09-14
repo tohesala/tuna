@@ -1,27 +1,28 @@
+
 from tests.base import TestBase
-import tuna.fft as fft
+from tuna import dft
 
 
-class TestFFT(TestBase):
-    def test_fft_constant_signal(self):
+class TestNaiveDFT(TestBase):
+    def test_dft_constant_signal(self):
         # For a constant signal t the FFT should be a spike of Size(t) at zero
         # frequency
-        self.assertEqual(fft.fft([1, 1, 1, 1]), [
-            4+0j, 0+0j, 0+0j, 0+0j])
+        self.assertListsAlmostEqual(
+            dft.naive_dft([1, 1, 1, 1]), [4+0j, 0+0j, 0+0j, 0+0j])
 
-    def test_fft_sine_wave(self):
+    def test_dft_sine_wave(self):
         # For a sine wave the FFT should be a spike of Size(t) at the frequency
         # of the sine wave
         self.assertListsAlmostEqual(
-            fft.fft([0, 1, 0, -1]), [0+0j, 0-2j, 0+0j, 0+2j])
+            dft.naive_dft([0, 1, 0, -1]), [0, -2j, 0, 2j])
 
-    def test_fft_cosine_wave(self):
+    def test_dft_cosine_wave(self):
         # For a cosine wave the FFT should be a spike of Size(t) at the frequency
         # of the cosine wave
         self.assertListsAlmostEqual(
-            fft.fft([1, 0, -1, 0]), [0+0j, 2+0j, 0+0j, 2+0j])
+            dft.naive_dft([1, 0, -1, 0]), [0, 2, 0, 2])
 
-    def test_fft_more_complex_wave(self):
+    def test_dft_more_complex_wave(self):
         wave = [5, 1, 7, 9, 1, 7, 7, 2, 7, 9, 5, 5, 6, 2, 1, 0]
         # The asserted output was calculated directly with the DFT definition:
         # https://en.wikipedia.org/wiki/Discrete_Fourier_transform#Definition
@@ -41,15 +42,4 @@ class TestFFT(TestBase):
                     (-2.074527666393384+1.6694261631388267j),
                     (-2.7781745930520176+13.192388155425117j),
                     (-14.449905882224062+6.6756694479033j)]
-        self.assertListsAlmostEqual(fft.fft(wave), expected, places=3)
-
-
-class TestInverseFFT(TestBase):
-    def test_inverse_of_fft_constant_signal(self):
-        self.assertEqual(fft.ifft([4, 0, 0, 0]), [1, 1, 1, 1])
-
-    def test_inverse_of_fft_sine_wave(self):
-        self.assertEqual(fft.ifft([0, -2j, 0, 2j]), [0, 1, 0, -1])
-
-    def test_inverse_of_fft_cosine_wave(self):
-        self.assertEqual(fft.ifft([0, 2, 0, 2]), [1, 0, -1, 0])
+        self.assertListsAlmostEqual(dft.naive_dft(wave), expected, places=3)
