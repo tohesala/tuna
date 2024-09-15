@@ -1,9 +1,9 @@
 from cmath import exp, pi
 
-from tuna.typing import NumericSequence
+from tuna.typing import RealSequence
 
 
-def naive_dft(x: NumericSequence) -> NumericSequence:
+def naive_dft(x: RealSequence) -> RealSequence:
     """
     Implements the Discrete Fourier Transform (DFT) directly using the
     definition. This is useful for testing, as the algorithm is much simpler to

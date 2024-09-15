@@ -1,7 +1,7 @@
 
 from math import log2, ulp
 from tuna.fft import fft, ifft
-from tuna.typing import NumericSequence
+from tuna.typing import RealSequence
 from tuna.utils import argmax
 
 # The smallest possible difference between two floating point numbers. This is
@@ -9,7 +9,7 @@ from tuna.utils import argmax
 EPS = ulp(1.0)
 
 
-def detect_pitch(signal: NumericSequence, sample_rate: int) -> float:
+def detect_pitch(signal: RealSequence, sample_rate: int) -> float:
     """
     Detects the pitch of a signal using cepstral analysis.
 
