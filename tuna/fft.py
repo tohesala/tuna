@@ -26,28 +26,26 @@ def fft(x: RealSequence) -> ComplexSequence:
     Returns:
         The complex-valued spectrum of the input signal.
     """
-    if len(x) == 0:
+    N = len(x)
+
+    if N == 0:
         raise ValueError("Input sequence must not be empty.")
     if not is_power_of_two(len(x)):
         raise ValueError("Input length must be a power of two.")
 
-    def _fft(x):
-        n = len(x)
-        if n == 1:
-            return x
-        X = [0] * n
-        even = fft(x[::2])
-        odd = fft(x[1::2])
-        for k in range(n // 2):
-            twiddle_factor = exp(-2j * pi * k / n)
-            X[k] = even[k] + twiddle_factor * odd[k]
-            X[k + n // 2] = even[k] - twiddle_factor * odd[k]
-        return X
-
-    return _fft(x)
+    if N == 1:
+        return x
+    X = [0] * N
+    even = fft(x[::2])
+    odd = fft(x[1::2])
+    for k in range(N // 2):
+        twiddle_factor = exp(-2j * pi * k / N)
+        X[k] = even[k] + twiddle_factor * odd[k]
+        X[k + N // 2] = even[k] - twiddle_factor * odd[k]
+    return X
 
 
-def ifft(X: ComplexSequence) -> RealSequence:
+def ifft(X: ComplexSequence) -> ComplexSequence:
     """
     Implements the Inverse Fast Fourier Transform (IFFT) algorithm. The
     algorithm is basically the same as the FFT algorithm, but with the twiddle
@@ -58,9 +56,10 @@ def ifft(X: ComplexSequence) -> RealSequence:
         empty and have a size that is a power of two.
 
     Returns:
-        The reconstructed signal (an array of discrete real valued samples).
+        The inverse fourier signal (complex valued).
     """
     N = len(X)
+
     if N == 0:
         raise ValueError("Input sequence must not be empty.")
     if not is_power_of_two(N):
@@ -79,5 +78,4 @@ def ifft(X: ComplexSequence) -> RealSequence:
             x[k + n // 2] = even[k] - twiddle_factor * odd[k]
         return x
 
-    # normalize the output
-    return [x.real/N for x in _ifft(X)]
+    return [x / N for x in _ifft(X)]

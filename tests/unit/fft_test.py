@@ -27,5 +27,5 @@ class TestInverseFFT(TestBase):
         self.assertRaises(ValueError, ifft, spectrum)
 
     @given(st.lists(st.integers(min_value=-1e6, max_value=1e6), min_size=1).filter(lambda x: is_power_of_two(len(x))))
-    def test_inverse_fft_should_return_original_signal(self, signal):
+    def test_inverse_fft_should_closely_equal_original_signal(self, signal):
         self.assertListsAlmostEqual(ifft(fft(signal)), signal)
