@@ -1,0 +1,10 @@
+[run]
+source = tuna
+omit =
+    app.py
+branch = True
+command_line = -m pytest
+
+[report]
+show_missing = True
+skip_empty = True
