@@ -9,7 +9,28 @@ from tuna.utils import argmax
 EPS = ulp(1.0)
 
 
-def detect_pitch(signal: RealSequence, sample_rate: int) -> float:
+def detect_pitch_simple(signal: RealSequence, sample_rate: int) -> float:
+    """
+    Detects the pitch of a signal using the simple method of finding the peak in
+    the magnitude spectrum. This will basically only work reliably for signals
+    with no noise and no harmonics.
+
+    Args:
+        signal: The input signal as a sequence of discrete real valued samples.
+        sample_rate: The sample rate of the signal.
+
+    Returns:
+        The detected pitch in Hz.
+    """
+    N = len(signal)
+    spectrum = fft(signal)[:N//2]
+    mag = [abs(x) for x in spectrum]
+    resolution = sample_rate / N
+    peak = argmax(mag)
+    return peak * resolution
+
+
+def detect_pitch_cepstral(signal: RealSequence, sample_rate: int) -> float:
     """
     Detects the pitch of a signal using cepstral analysis.
 
