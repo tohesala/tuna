@@ -2,11 +2,13 @@
 A simple CLI application wrapper around the tuna pitch detection functions.
 """
 
-from statistics import mean
 import struct
 import sys
-from tuna.pitch_detection import detect_pitch_simple
+from statistics import mean
+
 from sounddevice import RawInputStream, sleep
+
+from tuna.pitch_detection import detect_pitch_simple
 
 CLEAR = "\r\033[K"
 Fs = 1024
@@ -16,6 +18,7 @@ def noise_gate(signal, thresh=50):
     return [0 if abs(x) < thresh else x for x in signal]
 
 
+# pylint: disable=unused-argument
 def process_audio(indata, frames, time, status):
     if status:
         print(status, file=sys.stderr)
@@ -30,7 +33,11 @@ def process_audio(indata, frames, time, status):
 
 def main():
     try:
-        with RawInputStream(callback=process_audio, channels=1, dtype='int16', samplerate=Fs, blocksize=Fs//4) as stream:
+        with RawInputStream(
+                callback=process_audio,
+                channels=1,
+                dtype='int16',
+                samplerate=Fs, blocksize=Fs//4):
             print("Listening to the microphone...")
             print("Press Ctrl+C to exit.")
             while True:
