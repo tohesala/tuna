@@ -6,7 +6,7 @@ and Tukey in 1965, as discussed in Introduction to Algorithms (CLRS).
 
 from cmath import exp, pi
 
-from tuna.typing import ComplexSequence, RealSequence
+from tuna.types import ComplexSequence, RealSequence
 from tuna.utils import is_power_of_two
 
 

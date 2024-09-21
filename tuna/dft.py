@@ -1,6 +1,6 @@
 from cmath import exp, pi
 
-from tuna.typing import RealSequence
+from tuna.types import RealSequence
 
 
 def naive_dft(x: RealSequence) -> RealSequence:

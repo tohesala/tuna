@@ -1,7 +1,7 @@
 
 from math import log2, ulp
 from tuna.fft import fft, ifft
-from tuna.typing import RealSequence
+from tuna.types import RealSequence
 from tuna.utils import argmax
 
 # The smallest possible difference between two floating point numbers. This is
