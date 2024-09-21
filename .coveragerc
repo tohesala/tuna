@@ -3,7 +3,7 @@ source = tuna
 omit =
     app.py
 branch = True
-command_line = -m pytest
+command_line = -m pytest tests/unit
 
 [report]
 show_missing = True
