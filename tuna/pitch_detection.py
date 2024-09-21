@@ -9,6 +9,20 @@ from tuna.utils import argmax
 EPS = ulp(1.0)
 
 
+def hamming_window(n: int) -> RealSequence:
+    """
+    Creates a Hamming window.
+
+    Args:
+        n: The size of the window.
+
+    Returns:
+        A list of n Hamming window coefficients.
+    """
+    from math import cos, pi
+    return [0.54 - 0.46 * cos(2 * pi * i / (n - 1)) for i in range(n)]
+
+
 def detect_pitch_simple(signal: RealSequence, sample_rate: int) -> float:
     """
     Detects the pitch of a signal using the simple method of finding the peak in
@@ -23,6 +37,7 @@ def detect_pitch_simple(signal: RealSequence, sample_rate: int) -> float:
         The detected pitch in Hz.
     """
     N = len(signal)
+    signal = [s * w for s, w in zip(signal, hamming_window(N))]
     spectrum = fft(signal)[:N//2]
     mag = [abs(x) for x in spectrum]
     resolution = sample_rate / N
