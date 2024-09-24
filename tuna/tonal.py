@@ -25,3 +25,17 @@ def freq_to_note(freq: float) -> Tuple[str, float]:
     nearest = min(NOTES, key=lambda n: abs(NOTE_FREQS[n] - freq))
     distance = freq - NOTE_FREQS[nearest]
     return nearest, round(distance, 2)
+
+
+def note_to_freq(note: str, distance: float = 0.0) -> float:
+    """
+    Convert a note name and distance to a frequency.
+
+    Args:
+        note: The note name in the scientific pitch notation.
+        distance: The signed distance from the note.
+
+    Returns:
+        The frequency of the note.
+    """
+    return NOTE_FREQS[note] + distance
