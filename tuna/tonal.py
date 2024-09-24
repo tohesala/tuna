@@ -1,5 +1,13 @@
 from typing import Tuple
 
+OCTAVES = 10
+NOTE_BASES = "C C# D D# E F F# G G# A A# B".split()
+NOTES = [f"{note}{octave}" for octave in range(OCTAVES) for note in NOTE_BASES]
+A4 = 440
+# The formula for note frequencies is from https://en.wikipedia.org/wiki/Scientific_pitch_notation
+NOTE_FREQS = {note: round(A4 * 2**((12+m-69)/12), 2)
+              for m, note in enumerate(NOTES)}
+
 
 def freq_to_note(freq: float) -> Tuple[str, float]:
     """
@@ -14,4 +22,6 @@ def freq_to_note(freq: float) -> Tuple[str, float]:
         frequency is below the note. Similarly, a positive distance implies the
         note is sharp.
     """
-    return 'A', 4
+    nearest = min(NOTES, key=lambda n: abs(NOTE_FREQS[n] - freq))
+    distance = freq - NOTE_FREQS[nearest]
+    return nearest, round(distance, 2)
