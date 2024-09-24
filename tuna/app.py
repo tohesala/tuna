@@ -9,6 +9,7 @@ from statistics import mean
 from sounddevice import RawInputStream, sleep
 
 from tuna.pitch_detection import detect_pitch_simple
+from tuna.tonal import freq_to_note
 
 CLEAR = "\r\033[K"
 Fs = 1024
@@ -28,7 +29,8 @@ def process_audio(indata, frames, time, status):
     if mean([abs(s) for s in audio]) < 25:
         return print(CLEAR + "No pitch detected", end="")
     pitch = detect_pitch_simple(audio, Fs)
-    print(CLEAR + f"Detected pitch: {pitch:.2f} Hz", end="")
+    note, d = freq_to_note(pitch)
+    print(CLEAR + f"Detected pitch: {note} ({d:.2f}Hz)", end="")
 
 
 def main():
