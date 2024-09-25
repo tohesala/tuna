@@ -1,5 +1,7 @@
 import unittest
 
+# pylint: disable=invalid-name, consider-using-enumerate
+
 
 class TestBase(unittest.TestCase):
     def assertListsAlmostEqual(self, a, b, places=7):
@@ -8,4 +10,4 @@ class TestBase(unittest.TestCase):
             try:
                 self.assertAlmostEqual(a[i], b[i], places=places)
             except AssertionError as e:
-                raise AssertionError(f"Lists differ at index {i}: {e}")
+                raise AssertionError(f"Lists differ at index {i}: {e}") from e
