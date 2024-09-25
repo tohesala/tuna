@@ -1,5 +1,6 @@
 
-from math import log2, ulp
+from math import cos, floor, log2, pi, ulp
+
 from tuna.fft import fft, ifft
 from tuna.types import RealSequence
 from tuna.utils import argmax
@@ -19,7 +20,6 @@ def hamming_window(n: int) -> RealSequence:
     Returns:
         A list of n Hamming window coefficients.
     """
-    from math import cos, pi
     return [0.54 - 0.46 * cos(2 * pi * i / (n - 1)) for i in range(n)]
 
 
@@ -38,10 +38,12 @@ def detect_pitch_simple(signal: RealSequence, sample_rate: int) -> float:
     """
     N = len(signal)
     signal = [s * w for s, w in zip(signal, hamming_window(N))]
-    spectrum = fft(signal)[:N//2]
+    spectrum = fft(signal)
     mag = [abs(x) for x in spectrum]
     resolution = sample_rate / N
-    peak = argmax(mag)
+    # The spectrum of a real valued signal is symmetric so we only need to look
+    # at the first half.
+    peak = argmax(mag[:N//2])
     return peak * resolution
 
 
