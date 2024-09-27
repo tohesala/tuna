@@ -8,15 +8,12 @@ from statistics import mean
 
 from sounddevice import RawInputStream, sleep
 
+from tuna.filtering import noise_gate
 from tuna.pitch import detect_pitch
 from tuna.tonal import freq_to_note
 
 CLEAR = "\r\033[K"
 Fs = 1024
-
-
-def noise_gate(signal, thresh=50):
-    return [0 if abs(x) < thresh else x for x in signal]
 
 
 # pylint: disable=unused-argument

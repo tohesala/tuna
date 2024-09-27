@@ -1,5 +1,5 @@
 from tests.base import TestBase
-from tuna.filtering import hamming_window
+from tuna.filtering import hamming_window, noise_gate
 
 
 class HammingWindowTests(TestBase):
@@ -21,3 +21,13 @@ class HammingWindowTests(TestBase):
         window = hamming_window(n)
         # if the window is in ascending sorted order, it is increasing
         self.assertEqual(window[:n//2], sorted(window[:n//2]))
+
+
+class NoiseGateTests(TestBase):
+    def test_noise_gate_zeroes_below_threshold(self):
+        signal = [0, 1, 2, 3, 4, 5]
+        self.assertEqual(noise_gate(signal, 3), [0, 0, 0, 3, 4, 5])
+
+    def test_noise_gate_no_change_above_threshold(self):
+        signal = [0, 1, 2, 3, 4, 5]
+        self.assertEqual(noise_gate(signal, 0), signal)
