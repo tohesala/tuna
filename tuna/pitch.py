@@ -18,7 +18,7 @@ def hamming_window(n: int) -> RealSequence:
     return [0.54 - 0.46 * cos(2 * pi * i / (n - 1)) for i in range(n)]
 
 
-def detect_pitch_simple(signal: RealSequence, sample_rate: int) -> float:
+def detect_pitch(signal: RealSequence, sample_rate: int) -> float:
     """
     Detects the pitch of a signal using the simple method of finding the peak in
     the magnitude spectrum. This will basically only work reliably for signals
