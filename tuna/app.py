@@ -1,48 +1,34 @@
 """
-A simple CLI application wrapper around the tuna pitch detection functions.
+A simple CLI application wrapper around the Tuner.
 """
 
-import struct
-import sys
-from statistics import mean
-
-from sounddevice import RawInputStream, sleep
-
-from tuna.filtering import noise_gate
-from tuna.pitch import detect_pitch
-from tuna.tonal import freq_to_note
+from tuna.tuner import Tuner
 
 CLEAR = "\r\033[K"
-Fs = 1024
-
-
-# pylint: disable=unused-argument
-def process_audio(indata, frames, time, status):
-    if status:
-        print(status, file=sys.stderr)
-    N = len(indata)
-    audio = list(struct.unpack('h' * (N // 2), indata))
-    audio = noise_gate(audio)
-    if mean([abs(s) for s in audio]) < 25:
-        return print(CLEAR + "No pitch detected", end="")
-    pitch = detect_pitch(audio, Fs)
-    note, d = freq_to_note(pitch)
-    print(CLEAR + f"Detected pitch: {note} ({d:.2f}Hz)", end="")
+FRAME_RATE = 1024
 
 
 def main():
+    def out_replace(msg):
+        """
+        Output the message to the console. Replaces the previous message.
+        """
+        print(CLEAR + msg, end="")
+
+    def output_pitch(pitch=None):
+        if not pitch:
+            return out_replace("No pitch detected")
+        out_replace(f"Detected pitch: {pitch[0]} ({pitch[1]:.2f}Hz)")
+
+    tuner = Tuner(frame_rate=FRAME_RATE, pitch_callback=output_pitch)
     try:
-        with RawInputStream(
-                callback=process_audio,
-                channels=1,
-                dtype='int16',
-                samplerate=Fs, blocksize=Fs//4):
-            print("Listening to the microphone...")
-            print("Press Ctrl+C to exit.")
-            while True:
-                sleep(1000)
+        print("Listening to the microphone...")
+        print("Press Ctrl+C to exit.")
+        tuner.start()
     except KeyboardInterrupt:
-        print("\nGoodbye!")
+        tuner.stop()
+        print("")
+        print("Goodbye!")
 
 
 if __name__ == "__main__":
