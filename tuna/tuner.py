@@ -1,5 +1,4 @@
 import struct
-import sys
 import threading
 from dataclasses import dataclass
 from statistics import mean
@@ -31,18 +30,19 @@ class Tuner:
     Class ecapsulating the tuner functionality.
     """
 
-    def __init__(self, frame_rate=1024, pitch_callback=None):
+    def __init__(self, pitch_callback, err_callback=None, frame_rate=1024):
         self.frame_rate = frame_rate
         self.pitch_callback = pitch_callback
         self.finished = None
+        self.err_callback = err_callback
 
     # pylint: disable=unused-argument
     def process_audio_frame(self, indata: bytes, frames: int, time: Time, status: sd.CallbackFlags):
         """
         Process audio frame. Calls the `pitch_callback` function with the detected pitch.
         """
-        if status:
-            print(status, file=sys.stderr)
+        if status and self.err_callback:
+            self.err_callback(status)
         n = len(indata)
         audio = list(struct.unpack('h' * (n // 2), indata))
         audio = noise_gate(audio)

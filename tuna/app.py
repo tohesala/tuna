@@ -2,6 +2,10 @@
 A simple CLI application wrapper around the Tuner.
 """
 
+import sys
+
+import sounddevice as sd
+
 from tuna.tuner import Tuner
 
 CLEAR = "\r\033[K"
@@ -20,7 +24,12 @@ def main():
             return out_replace("No pitch detected")
         out_replace(f"Detected pitch: {pitch[0]} ({pitch[1]:.2f}Hz)")
 
-    tuner = Tuner(frame_rate=FRAME_RATE, pitch_callback=output_pitch)
+    def print_error(status: sd.CallbackFlags):
+        print(f"\nError: {status}", file=sys.stderr)
+
+    tuner = Tuner(frame_rate=FRAME_RATE,
+                  pitch_callback=output_pitch,
+                  err_callback=print_error)
     try:
         print("Listening to the microphone...")
         print("Press Ctrl+C to exit.")
