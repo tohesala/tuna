@@ -27,13 +27,15 @@ def main():
     def print_error(status: sd.CallbackFlags):
         print(f"\nError: {status}", file=sys.stderr)
 
+    def on_tuner_ready():
+        print("Listening to the microphone...")
+        print("Press Ctrl+C to exit.")
+
     tuner = Tuner(frame_rate=FRAME_RATE,
                   pitch_callback=output_pitch,
                   err_callback=print_error)
     try:
-        print("Listening to the microphone...")
-        print("Press Ctrl+C to exit.")
-        tuner.start()
+        tuner.start(ready_callback=on_tuner_ready)
     except KeyboardInterrupt:
         tuner.stop()
         print("")

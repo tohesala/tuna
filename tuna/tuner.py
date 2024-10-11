@@ -51,7 +51,7 @@ class Tuner:
         pitch = detect_pitch(audio, self.frame_rate)
         self.pitch_callback(freq_to_note(pitch))
 
-    def start(self):
+    def start(self, ready_callback):
         """
         Starts the tuner, i.e. begins listening to the microphone and processing
         the data in each frame.
@@ -63,6 +63,7 @@ class Tuner:
                 dtype='int16',
                 samplerate=self.frame_rate, blocksize=self.frame_rate//4,
                 finished_callback=self.finished.set):
+            ready_callback()
             self.finished.wait()
 
     def stop(self):
