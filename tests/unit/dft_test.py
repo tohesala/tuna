@@ -1,9 +1,16 @@
 
+from hypothesis import given
+from hypothesis import strategies as st
+
 from tests.base import TestBase
 from tuna import dft
 
 
 class TestNaiveDFT(TestBase):
+    def test_empty_signal(self):
+        # The DFT of an empty signal should be an empty signal
+        self.assertEqual(dft.naive_dft([]), [])
+
     def test_dft_constant_signal(self):
         # For a constant signal t the FFT should be a spike of Size(t) at zero
         # frequency
@@ -43,3 +50,10 @@ class TestNaiveDFT(TestBase):
                     (-2.7781745930520176+13.192388155425117j),
                     (-14.449905882224062+6.6756694479033j)]
         self.assertListsAlmostEqual(dft.naive_dft(wave), expected, places=3)
+
+    @given(st.lists(st.floats(min_value=-1e6, max_value=1e6), min_size=1))
+    def test_dft_even_symmetry_hypothesis(self, t):
+        # The DFT of a real signal should have even symmetry (i.e. X[k] = X[-k])
+        x = [abs(a) for a in dft.naive_dft(t)]
+        y = [abs(b) for b in dft.naive_dft(t[::-1])]
+        self.assertListsAlmostEqual(x, y, places=3)
