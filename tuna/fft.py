@@ -6,11 +6,10 @@ and Tukey in 1965, as discussed in Introduction to Algorithms (CLRS).
 
 from cmath import exp, pi
 
-from tuna.types import ComplexSequence, RealSequence
 from tuna.utils import is_power_of_two
 
 
-def fft(x: RealSequence) -> ComplexSequence:
+def fft(x: list[int | float]) -> list[complex]:
     """
     Implements the Fast Fourier Transform (FFT) algorithm. The algorithm follows
     the variant of Cooley-Tukey that is discussed in Introduction to Algorithms
@@ -45,7 +44,7 @@ def fft(x: RealSequence) -> ComplexSequence:
     return X
 
 
-def ifft(X: ComplexSequence) -> ComplexSequence:
+def ifft(X: list[complex]) -> list[complex]:
     """
     Implements the Inverse Fast Fourier Transform (IFFT) algorithm. The
     algorithm is basically the same as the FFT algorithm, but with the twiddle

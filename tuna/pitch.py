@@ -1,10 +1,9 @@
 from tuna.fft import fft
 from tuna.filtering import hamming_window
-from tuna.types import RealSequence
 from tuna.utils import argmax
 
 
-def detect_pitch(signal: RealSequence, sample_rate: int) -> float:
+def detect_pitch(signal: list[int | float], sample_rate: int) -> float:
     """
     Detects the pitch of a signal using the simple method of finding the peak in
     the magnitude spectrum. This will basically only work reliably for signals

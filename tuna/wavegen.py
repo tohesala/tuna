@@ -1,9 +1,7 @@
 from math import floor, pi, sin
 
-from tuna.types import RealSequence
 
-
-def make_sine_wave(frequency, sample_rate=4096, duration=1) -> RealSequence:
+def make_sine_wave(frequency, sample_rate=4096, duration=1) -> list[float]:
     """
     Generate a sine wave of a given frequency.
 
@@ -19,7 +17,7 @@ def make_sine_wave(frequency, sample_rate=4096, duration=1) -> RealSequence:
     return [sin(2 * pi * frequency * ti) for ti in t]
 
 
-def make_square_wave(frequency, sample_rate=4096, duration=1) -> RealSequence:
+def make_square_wave(frequency, sample_rate=4096, duration=1) -> list[float]:
     """
     Generate a square wave of a given frequency.
 

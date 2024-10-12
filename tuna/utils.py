@@ -21,7 +21,7 @@ def is_power_of_two(n: int) -> bool:
     return n.is_integer() and int(n) & (int(n) - 1) == 0
 
 
-def argmax(t: Sequence[int]) -> int:
+def argmax(t: Sequence[int | float]) -> int:
     """
     Return the index of the maximum element in a sequence.
 

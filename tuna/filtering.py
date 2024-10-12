@@ -1,9 +1,8 @@
 
 from math import cos, pi
-from tuna.types import RealSequence
 
 
-def hamming_window(n: int) -> RealSequence:
+def hamming_window(n: int) -> list[float]:
     """
     Creates a Hamming window.
 
