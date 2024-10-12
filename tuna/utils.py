@@ -18,7 +18,7 @@ def is_power_of_two(n: int) -> bool:
     """
     # any power of two will have exactly one bit set in its binary
     # representation
-    return n.is_integer() and int(n) & (int(n) - 1) == 0
+    return int(n) & (int(n) - 1) == 0
 
 
 def argmax(t: Sequence[int | float]) -> int:

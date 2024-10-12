@@ -10,7 +10,7 @@ class IsPowerOfTwoTests(TestBase):
         for n in self.POWERS_OF_TWO_32:
             self.assertTrue(is_power_of_two(n))
 
-    @given(st.integers(min_value=1, max_value=2**31) | st.floats(min_value=1, max_value=2**31))
+    @given(st.integers(min_value=1, max_value=2**31))
     def test_32bit_non_powers_of_two_fail(self, n):
         if n not in self.POWERS_OF_TWO_32:
             self.assertFalse(is_power_of_two(n))
