@@ -1,5 +1,6 @@
 # Tuna - A digital guitar tuner
 
+![CI status](https://github.com/tohesala/tuna/actions/workflows/checks.yml/badge.svg)
 [![codecov](https://codecov.io/github/tohesala/tuna/graph/badge.svg?token=74VQQ80RMX)](https://codecov.io/github/tohesala/tuna)
 
 This project is a simple digital guitar tuner that can be used to tune a guitar
