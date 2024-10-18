@@ -29,11 +29,8 @@ jobs:
       - name: Install Python dependencies
         run: poetry install
 
-      - name: Run tests
-        run: poetry run coverage run
-
-      - name: Generate coverage report
-        run: poetry run coverage json
+      - name: Test and collect
+        run: poetry run inv coverage
 
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v4
