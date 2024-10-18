@@ -30,11 +30,16 @@ class Tuner:
     Class ecapsulating the tuner functionality.
     """
 
-    def __init__(self, pitch_callback, err_callback=None, frame_rate=1024):
+    def __init__(self,
+                 pitch_callback,
+                 err_callback=None,
+                 frame_rate=1024,
+                 input_device=None):
         self.frame_rate = frame_rate
         self.pitch_callback = pitch_callback
         self.finished = None
         self.err_callback = err_callback
+        self.input_device = input_device
 
     # pylint: disable=unused-argument
     def process_audio_frame(self, indata: bytes, frames: int, time: Time, status: sd.CallbackFlags):
@@ -59,6 +64,7 @@ class Tuner:
         """
         self.finished = threading.Event()
         with sd.RawInputStream(
+                device=self.input_device,
                 callback=self.process_audio_frame,
                 channels=1,
                 dtype='int16',
@@ -72,3 +78,12 @@ class Tuner:
         Stops the tuner.
         """
         self.finished.set()
+
+    @staticmethod
+    def list_inputs():
+        """
+        List available input devices.
+        """
+        devices = {i: d['name'] for i, d in enumerate(
+            sd.query_devices()) if d['max_input_channels'] > 0}
+        return devices, sd.default.device[0]

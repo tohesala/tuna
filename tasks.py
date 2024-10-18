@@ -18,8 +18,11 @@ def check_portaudio(ctx: Context):
 
 
 @task(check_portaudio)
-def start(ctx: Context):
-    ctx.run("python tuna/app.py", pty=True)
+def start(ctx: Context, select_input=False):
+    cmd = "python tuna/app.py"
+    if select_input:
+        cmd += " -s"
+    ctx.run(cmd, pty=True)
 
 
 @task(check_portaudio)
