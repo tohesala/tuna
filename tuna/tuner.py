@@ -47,9 +47,10 @@ class Tuner:
         audio = list(struct.unpack('h' * (n // 2), indata))
         audio = noise_gate(audio)
         if mean([abs(s) for s in audio]) < 25:
-            return self.pitch_callback(None)
-        pitch = detect_pitch(audio, self.frame_rate)
-        self.pitch_callback(freq_to_note(pitch))
+            self.pitch_callback(None)
+        else:
+            pitch = detect_pitch(audio, self.frame_rate)
+            self.pitch_callback(freq_to_note(pitch))
 
     def start(self, ready_callback):  # pragma: no cover
         """

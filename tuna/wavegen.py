@@ -11,7 +11,7 @@ def make_sine_wave(frequency, sample_rate=4096, duration=1) -> list[float]:
         duration: The duration of the signal in seconds.
 
     Returns:
-        The sine wave as a sequence of real valued samples.
+        The sine wave as a list of real valued samples.
     """
     t = [i / sample_rate for i in range(int(sample_rate * duration))]
     return [sin(2 * pi * frequency * ti) for ti in t]
@@ -27,7 +27,7 @@ def make_square_wave(frequency, sample_rate=4096, duration=1) -> list[float]:
         duration: The duration of the signal in seconds.
 
     Returns:
-        The square wave as a sequence of real valued samples.
+        The square wave as a list of real valued samples.
     """
     t = [i / sample_rate for i in range(int(sample_rate * duration))]
     return [(-1)**floor(2*frequency*ti) for ti in t]

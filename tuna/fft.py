@@ -25,26 +25,22 @@ def fft(x: list[int | float]) -> list[complex]:
     Returns:
         The complex-valued spectrum of the input signal.
     """
-    N = len(x)
-
-    if N == 0:
-        raise ValueError("Input sequence must not be empty.")
+    n = len(x)
     if not is_power_of_two(len(x)):
         raise ValueError("Input length must be a power of two.")
-
-    if N == 1:
+    if n == 1:
         return x
-    X = [0] * N
+    dft = [0] * n
     even = fft(x[::2])
     odd = fft(x[1::2])
-    for k in range(N // 2):
-        twiddle_factor = exp(-2j * pi * k / N)
-        X[k] = even[k] + twiddle_factor * odd[k]
-        X[k + N // 2] = even[k] - twiddle_factor * odd[k]
-    return X
+    for k in range(n // 2):
+        twiddle_factor = exp(-2j * pi * k / n)
+        dft[k] = even[k] + twiddle_factor * odd[k]
+        dft[k + n // 2] = even[k] - twiddle_factor * odd[k]
+    return dft
 
 
-def ifft(X: list[complex]) -> list[complex]:
+def ifft(dft: list[complex]) -> list[complex]:
     """
     Implements the Inverse Fast Fourier Transform (IFFT) algorithm. The
     algorithm is basically the same as the FFT algorithm, but with the twiddle
@@ -57,19 +53,15 @@ def ifft(X: list[complex]) -> list[complex]:
     Returns:
         The inverse fourier signal (complex valued).
     """
-    N = len(X)
-
-    if N == 0:
-        raise ValueError("Input sequence must not be empty.")
-    if not is_power_of_two(N):
+    if not is_power_of_two(len(dft)):
         raise ValueError("Input length must be a power of two.")
 
-    def _ifft(X):
-        n = len(X)
+    def _ifft(dft):
+        n = len(dft)
         if n == 1:
-            return X
-        even = _ifft(X[::2])
-        odd = _ifft(X[1::2])
+            return dft
+        even = _ifft(dft[::2])
+        odd = _ifft(dft[1::2])
         x = [0] * n
         for k in range(n // 2):
             twiddle_factor = exp(2j * pi * k / n)
@@ -77,4 +69,4 @@ def ifft(X: list[complex]) -> list[complex]:
             x[k + n // 2] = even[k] - twiddle_factor * odd[k]
         return x
 
-    return [x / N for x in _ifft(X)]
+    return [x / len(dft) for x in _ifft(dft)]

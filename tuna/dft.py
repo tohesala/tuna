@@ -1,8 +1,7 @@
 from cmath import exp, pi
-from typing import Sequence
 
 
-def naive_dft(x: Sequence[int | float]) -> Sequence[complex]:
+def naive_dft(x: list[int | float]) -> list[complex]:
     """
     Implements the Discrete Fourier Transform (DFT) directly using the
     definition. This is useful for testing, as the algorithm is much simpler to
@@ -19,11 +18,11 @@ def naive_dft(x: Sequence[int | float]) -> Sequence[complex]:
     Returns:
         The complex-valued spectrum of the input signal.
     """
-    N = len(x)
-    if N == 1:
+    n = len(x)
+    if n == 1:
         return x
-    X = [0] * N
-    for k in range(N):
-        for n in range(N):
-            X[k] += x[n] * exp(-2j * pi * k * n / N)
-    return X
+    dft = [0] * n
+    for k in range(n):
+        for n in range(n):
+            dft[k] += x[n] * exp(-2j * pi * k * n / n)
+    return dft

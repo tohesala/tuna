@@ -21,8 +21,9 @@ def main():
 
     def output_pitch(pitch=None):
         if not pitch:
-            return out_replace("No pitch detected")
-        out_replace(f"Detected pitch: {pitch[0]} ({pitch[1]:.2f}Hz)")
+            out_replace("No pitch detected")
+        else:
+            out_replace(f"Detected pitch: {pitch[0]} ({pitch[1]:.2f}Hz)")
 
     def print_error(status: sd.CallbackFlags):
         print(f"\nError: {status}", file=sys.stderr)

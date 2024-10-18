@@ -3,9 +3,6 @@ Miscellaneous utility functions.
 """
 
 
-from typing import Sequence
-
-
 def is_power_of_two(n: int) -> bool:
     """
     Check if a number is a power of two.
@@ -21,16 +18,16 @@ def is_power_of_two(n: int) -> bool:
     return int(n) & (int(n) - 1) == 0
 
 
-def argmax(t: Sequence[int | float]) -> int:
+def argmax(t: list[int | float]) -> int:
     """
-    Return the index of the maximum element in a sequence.
+    Return the index of the maximum element in a list.
 
     Args:
-        t: The sequence to search.
+        t: The list to search.
 
     Returns:
-        The index of the maximum element in the sequence.
+        The index of the maximum element in the list.
     """
     if len(t) == 0:
-        raise ValueError("Can not find the argmax of an empty sequence.")
+        raise ValueError("Can not find the argmax of an empty list.")
     return max(enumerate(t), key=lambda x: x[1])[0]

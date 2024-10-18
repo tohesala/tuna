@@ -44,3 +44,8 @@ def coverage(ctx: Context, json=False):
         ctx.run("coverage json")
     else:
         ctx.run("coverage report")
+
+
+@task
+def lint(ctx: Context):
+    ctx.run("pylint tuna", pty=True)
