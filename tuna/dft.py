@@ -23,6 +23,6 @@ def naive_dft(x: list[int | float]) -> list[complex]:
         return x
     dft = [0] * n
     for k in range(n):
-        for n in range(n):
-            dft[k] += x[n] * exp(-2j * pi * k * n / n)
+        for j in range(n):
+            dft[k] += x[j] * exp(-2j * pi * k * j / n)
     return dft

@@ -6,6 +6,9 @@ from tuna.utils import is_power_of_two, argmax
 class IsPowerOfTwoTests(TestBase):
     POWERS_OF_TWO_32 = set(2**i for i in range(32))
 
+    def test_zero_is_not(self):
+        self.assertFalse(is_power_of_two(0))
+
     def test_32bit_powers_of_two_pass(self):
         for n in self.POWERS_OF_TWO_32:
             self.assertTrue(is_power_of_two(n))
