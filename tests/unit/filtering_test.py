@@ -1,3 +1,5 @@
+from hypothesis import given
+from hypothesis import strategies as st
 from tests.base import TestBase
 from tuna.filtering import hamming_window, noise_gate
 
@@ -25,9 +27,19 @@ class HammingWindowTests(TestBase):
 
 class NoiseGateTests(TestBase):
     def test_noise_gate_zeroes_below_threshold(self):
-        signal = [0, 1, 2, 3, 4, 5]
-        self.assertEqual(noise_gate(signal, 3), [0, 0, 0, 3, 4, 5])
+        signal = [0, 1, -1, 2, -2, 3, -3, 4, -4]
+        self.assertEqual(noise_gate(signal, 3), [0, 0, 0, 0, 0, 3, -3, 4, -4])
 
     def test_noise_gate_no_change_above_threshold(self):
-        signal = [0, 1, 2, 3, 4, 5]
+        signal = [0, 1, -1, 2, -2, 3, -3, 4, -4]
         self.assertEqual(noise_gate(signal, 0), signal)
+
+    @given(st.lists(st.floats(-1000, 1000), min_size=1), st.integers(1, 1000))
+    def test_noise_gate_threshold_hypothesis(self, signal, threshold):
+        # verify no values below threshold exist in the output
+        result = noise_gate(signal, threshold)
+        nonzero = [abs(x) for x in result if x != 0]
+        if len(nonzero) > 0:
+            self.assertGreaterEqual(min(nonzero), threshold)
+        else:
+            self.assertEqual(result, [0] * len(signal))
