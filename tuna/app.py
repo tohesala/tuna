@@ -4,8 +4,6 @@ A simple CLI application wrapper around the Tuner.
 
 import sys
 
-import sounddevice as sd
-
 from tuna.tuner import Tuner
 
 CLEAR = "\r\033[K"
@@ -35,38 +33,42 @@ def select_input():
         sys.exit(1)
 
 
+def print_replace(msg):
+    """
+    Output the message to the console. Replaces the previous message.
+    """
+    print(CLEAR + msg, end="")
+
+
+def print_pitch(pitch=None):
+    if not pitch:
+        print_replace("No pitch detected")
+    else:
+        print_replace(f"Detected pitch: {pitch[0]} ({pitch[1]:.2f}Hz)")
+
+
+def print_error(status):
+    print(f"\nError: {status}", file=sys.stderr)
+
+
+def print_ready():
+    print("Listening to the microphone...")
+    print("Press Ctrl+C to exit.")
+
+
 def main():
-    def out_replace(msg):
-        """
-        Output the message to the console. Replaces the previous message.
-        """
-        print(CLEAR + msg, end="")
-
-    def output_pitch(pitch=None):
-        if not pitch:
-            out_replace("No pitch detected")
-        else:
-            out_replace(f"Detected pitch: {pitch[0]} ({pitch[1]:.2f}Hz)")
-
-    def print_error(status: sd.CallbackFlags):
-        print(f"\nError: {status}", file=sys.stderr)
-
-    def on_tuner_ready():
-        print("Listening to the microphone...")
-        print("Press Ctrl+C to exit.")
-
     device = None
 
     if '-s' in sys.argv or '--select-input' in sys.argv:
         device = select_input()
 
     tuner = Tuner(frame_rate=FRAME_RATE,
-                  pitch_callback=output_pitch,
+                  pitch_callback=print_pitch,
                   err_callback=print_error,
                   input_device=device)
 
     try:
-        tuner.start(ready_callback=on_tuner_ready)
+        tuner.start(ready_callback=print_ready)
     except KeyboardInterrupt:
         tuner.stop()
         print("")
