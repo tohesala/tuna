@@ -30,7 +30,7 @@ jobs:
         run: poetry install
 
       - name: Test and collect
-        run: poetry run inv coverage
+        run: poetry run inv coverage --json
 
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v4
