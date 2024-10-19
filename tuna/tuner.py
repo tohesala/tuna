@@ -80,7 +80,7 @@ class Tuner:
         self.finished.set()
 
     @staticmethod
-    def list_inputs():
+    def list_inputs():  # pragma: no cover
         """
         List available input devices.
         """
