@@ -54,7 +54,7 @@ def print_pitch(pitch=None):
     if not pitch:
         print_replace("No pitch detected")
     else:
-        print_replace(f"Detected pitch: {pitch[0]} ({pitch[1]:.2f}Hz)")
+        print_replace(f"Detected pitch: {pitch[0]} ({pitch[1]:+.2f}Hz)")
 
 
 def print_error(status):
