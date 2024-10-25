@@ -63,7 +63,8 @@ class Tuner:
         n = len(indata)
         audio = list(struct.unpack('h' * (n // 2), indata))
         audio = noise_gate(audio, self.noise_threshold)
-        if mean([abs(s) for s in audio]) < 25:
+        null_samples = sum([1 for s in audio if s == 0])
+        if null_samples / n > 0.2:
             self.pitch_callback(None)
         else:
             pitch = detect_pitch(audio, self.frame_rate)
