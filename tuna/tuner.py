@@ -22,24 +22,36 @@ class Time:
     outputBufferDacTime: float
 
 
-CLEAR = "\r\033[K"
-
-
 class Tuner:
     """
     Class ecapsulating the tuner functionality.
     """
 
     def __init__(self,
+                 frame_rate,
+                 noise_threshold,
                  pitch_callback,
                  err_callback=None,
-                 frame_rate=1024,
                  input_device=None):
+        """
+        Initializes a new Tuner instance.
+
+        Args:
+            frame_rate: The frame rate of the audio stream.
+            noise_threshold: The noise threshold.
+            pitch_callback: A function to call with the detected pitch.
+            err_callback: A function to call with the error status.
+            input_device: The input device to use.
+
+        Returns:
+            A new Tuner instance.
+        """
         self.frame_rate = frame_rate
+        self.noise_threshold = noise_threshold
         self.pitch_callback = pitch_callback
-        self.finished = None
         self.err_callback = err_callback
         self.input_device = input_device
+        self.finished = None
 
     # pylint: disable=unused-argument
     def process_audio_frame(self, indata: bytes, frames: int, time: Time, status: sd.CallbackFlags):
@@ -50,7 +62,7 @@ class Tuner:
             self.err_callback(status)
         n = len(indata)
         audio = list(struct.unpack('h' * (n // 2), indata))
-        audio = noise_gate(audio)
+        audio = noise_gate(audio, self.noise_threshold)
         if mean([abs(s) for s in audio]) < 25:
             self.pitch_callback(None)
         else:

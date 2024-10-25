@@ -15,7 +15,7 @@ def hamming_window(n: int) -> list[float]:
     return [0.54 - 0.46 * cos(2 * pi * i / (n - 1)) for i in range(n)]
 
 
-def noise_gate(signal, thresh=50):
+def noise_gate(signal: list[float], thresh: float) -> list[float]:
     """
     Apply a noise gate to the signal. Samples with magnitude below the threshold
     are set to zero.

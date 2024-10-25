@@ -8,6 +8,7 @@ from tuna.tuner import Tuner
 
 CLEAR = "\r\033[K"
 FRAME_RATE = 1024
+DEFAULT_NOISE_THRESHOLD = 50
 
 
 def select_input():
@@ -30,6 +31,17 @@ def select_input():
     except KeyboardInterrupt:
         print("")
         print("Cancelled")
+        sys.exit(1)
+
+
+def read_noise_threshold():
+    """
+    Reads the noise threshold from the arguments.
+    """
+    try:
+        return float(sys.argv[sys.argv.index('-n') + 1])
+    except ValueError:
+        print("Invalid noise threshold")
         sys.exit(1)
 
 
@@ -58,11 +70,16 @@ def print_ready():
 
 def main():
     device = None
+    noise_threshold = DEFAULT_NOISE_THRESHOLD
 
     if '-s' in sys.argv or '--select-input' in sys.argv:
         device = select_input()
 
+    if '-n' in sys.argv or '--noise-threshold' in sys.argv:
+        noise_threshold = read_noise_threshold()
+
     tuner = Tuner(frame_rate=FRAME_RATE,
+                  noise_threshold=noise_threshold,
                   pitch_callback=print_pitch,
                   err_callback=print_error,
                   input_device=device)
