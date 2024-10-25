@@ -1,7 +1,6 @@
 import struct
 import threading
 from dataclasses import dataclass
-from statistics import mean
 
 import sounddevice as sd
 
@@ -81,7 +80,8 @@ class Tuner:
                 callback=self.process_audio_frame,
                 channels=1,
                 dtype='int16',
-                samplerate=self.frame_rate, blocksize=self.frame_rate//4,
+                samplerate=self.frame_rate,
+                blocksize=self.frame_rate//4,
                 finished_callback=self.finished.set):
             ready_callback()
             self.finished.wait()
