@@ -15,7 +15,7 @@ class TunerTests(unittest.TestCase):
         """
 
         pitch_callback = Mock()
-        tuner = Tuner(pitch_callback)
+        tuner = Tuner(pitch_callback=pitch_callback)
         indata = struct.pack('h' * 4, 0, 0, 0, 0)
         time = Time(0, 0, 0)
         status = sd.CallbackFlags()
@@ -31,7 +31,7 @@ class TunerTests(unittest.TestCase):
 
         pitch_callback = Mock()
         err_callback = Mock()
-        tuner = Tuner(pitch_callback, err_callback)
+        tuner = Tuner(pitch_callback=pitch_callback, err_callback=err_callback)
         indata = struct.pack('h' * 4, 0, 0, 0, 0)
         time = Time(0, 0, 0)
         status = sd.CallbackFlags(1)
@@ -49,7 +49,7 @@ class TunerTests(unittest.TestCase):
         """
 
         pitch_callback = Mock()
-        tuner = Tuner(pitch_callback, frame_rate=4096)
+        tuner = Tuner(pitch_callback=pitch_callback, frame_rate=4096)
         indata = struct.pack('h' * 4, 1000, 1000, 1000, 1000)
         time = Time(0, 0, 0)
         status = sd.CallbackFlags()

@@ -4,11 +4,9 @@ A simple CLI application wrapper around the Tuner.
 
 import sys
 
-from tuna.tuner import Tuner
+from tuna.tuner import DEFAULT_FRAME_RATE, DEFAULT_NOISE_THRESHOLD, Tuner
 
 CLEAR = "\r\033[K"
-FRAME_RATE = 1024
-DEFAULT_NOISE_THRESHOLD = 50
 
 
 def select_input():
@@ -78,7 +76,7 @@ def main():
     if '-n' in sys.argv or '--noise-threshold' in sys.argv:
         noise_threshold = read_noise_threshold()
 
-    tuner = Tuner(frame_rate=FRAME_RATE,
+    tuner = Tuner(frame_rate=DEFAULT_FRAME_RATE,
                   noise_threshold=noise_threshold,
                   pitch_callback=print_pitch,
                   err_callback=print_error,

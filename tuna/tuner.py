@@ -8,6 +8,9 @@ from tuna.filtering import noise_gate
 from tuna.pitch import detect_pitch
 from tuna.tonal import freq_to_note
 
+DEFAULT_FRAME_RATE = 1024
+DEFAULT_NOISE_THRESHOLD = 50
+
 
 @dataclass
 class Time:
@@ -27,9 +30,9 @@ class Tuner:
     """
 
     def __init__(self,
-                 frame_rate,
-                 noise_threshold,
                  pitch_callback,
+                 frame_rate=DEFAULT_FRAME_RATE,
+                 noise_threshold=DEFAULT_NOISE_THRESHOLD,
                  err_callback=None,
                  input_device=None):
         """
